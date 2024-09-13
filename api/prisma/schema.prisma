@@ -1,0 +1,68 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+// User model to store both Sellers and Buyers
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+
+  products  Product[] @relation("SellerProducts")
+  cart      Cart[]    @relation("BuyerCart")
+}
+
+// Product model
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  description String
+  price       Float
+  discount    Float   @default(0.0) // Optional discount with default 0
+
+  sellerId    Int
+  seller      User     @relation("SellerProducts", fields: [sellerId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cartProducts CartProduct[] // Cart items associated with this product
+}
+
+// Cart model
+model Cart {
+  id        Int      @id @default(autoincrement())
+  buyerId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyer     User     @relation("BuyerCart", fields: [buyerId], references: [id])
+  cartProducts CartProduct[] // Products in the cart
+}
+
+// CartProduct model
+model CartProduct {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  productId Int
+  quantity  Int      @default(1)
+
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  @@unique([cartId, productId])
+}
+
+enum Role {
+  seller
+  buyer
+}
