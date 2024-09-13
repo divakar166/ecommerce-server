@@ -24,8 +24,18 @@ app.use((req, res, next) => {
   req.prisma = prisma;
   next();
 });
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec,{customCSSUrl: CSS_URL}));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec,{
+  customSiteTitle: 'Ecommerce Backend',
+  customJs: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
+  ],
+  customCssUrl: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css',
+  ],
+}));
 
 // API routes
 app.use('/api/users', userRoutes);
