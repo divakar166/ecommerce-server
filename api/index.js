@@ -44,7 +44,7 @@ app.use('/api/', buyerRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('REST API Server for e-commerce application');
+  res.send('REST API Server for e-commerce application. Access <a href="/api/docs">Swagger Docs</a>.');
 });
 
 process.on('SIGINT', async () => {
