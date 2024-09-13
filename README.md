@@ -67,16 +67,17 @@ Ensure that you have the following installed on your system:
 ## API Endpoints
 1. User Authentication
    - **Sign-up (Buyer/Seller)**: `POST /api/auth/signup`
-   - **Login**: `POST /api/auth/login`
+   - **Login**: `POST /api/auth/login` (*Return Authorization Token)
 2. Seller Routes
-   - **Add Product**: `POST /api/seller/products`
-   - **Edit Product**: `PUT /api/seller/products/:id`
-   - **Delete Product**: `DELETE /api/seller/products/:id`
+   - **Add Product**: `POST /api/seller/products` (*Require Authorization Token)
+   - **Edit Product**: `PUT /api/seller/products/:id` (*Require Authorization Token)
+   - **Delete Product**: `DELETE /api/seller/products/:id` (*Require Authorization Token)
 3. Buyer Routes
    - **Search Products**: `GET /api/search?name=...&category=...`
-   - **Add to Cart**: `POST /api/cart`
-   - **Remove from Cart**: `DELETE /api/cart/:productId`
-   - **Clear Cart**: `DELETE /api/cart/clear`
+   - **Add to Cart**: `POST /api/cart` (*Require Authorization Token)
+   - **Remove from Cart**: `DELETE /api/cart/:productId` (*Require Authorization Token)
+   - **Clear Cart**: `DELETE /api/cart/clear` (*Require Authorization Token)
 4. API Documentation (Swagger Docs):
    - Can be accessed at - `http://localhost:3000/api/docs`
   
+### *Note: Authorised API Endpoints, require authorization token, which can be generated only after log in. On successful Login, Authorization token is returned by server which is used to perform further operations. SwaggerDocs provide a better functionalality to authorize user by submitting token in authorize section.
